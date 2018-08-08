@@ -1,7 +1,7 @@
 FROM dockersunibm/finaltomcatimage0701
-RUN mkdir /com.yanghua
-COPY . /com.yanghua
-RUN cd com.yanghua
+RUN mkdir /comronghua
+COPY . /comronghua
+RUN cd /comronghua
 RUN mvn clean package
 RUN cd target
 RUN cp com.ronghua.war /opt/apache-tomcat-8.5.32/webapps/
