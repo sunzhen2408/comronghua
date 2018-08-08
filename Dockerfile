@@ -1,7 +1,10 @@
 FROM dockersunibm/finaltomcatimage0701
+RUN ls
 RUN mkdir /comronghua
 COPY . /comronghua
 RUN cd /comronghua
+RUN ls
+RUN cd comronghua
 RUN ls
 RUN mvn clean package
 RUN cd target
