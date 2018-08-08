@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd
+">
+
+    <http auto-config="true">
+        <!--初版-->
+        <!--<intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>-->
+        <!--<intercept-url pattern="/user/**" access="ROLE_ADMIN,ROLE_USER,ROLE_DELETE"/>-->
+        <!--<intercept-url pattern="/back/**" access="ROLE_USER"/>-->
+
+        <!--<intercept-url pattern="/test_security_jump" access="ROLE_ADMIN"/>-->
+
+        <access-denied-handler error-page="/back/denied"/>
+
+        <!--自定义默认登录的同时，也确认了登录后的处理-->
+        <form-login login-page="/showLogin" default-target-url="/list"/>
+        <custom-filter ref="myFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>
+        <!--</span>-->
+    </http>
+
+
+    <!--改进-->
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="myUserService">
+        </authentication-provider>
+    </authentication-manager>
+    <beans:bean id="myUserService" class="com.yanghua.gongxiang.services.MyUserService"></beans:bean>
+    <beans:bean id="myFilterSecurityInterceptor" class="com.yanghua.gongxiang.services.MyFilterSecurityInterceptor">
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <!-- 用户是否拥有所请求资源的权限 -->
+        <beans:property name="accessDecisionManager" ref="MyAccessDecisionManager" />
+        <!-- 资源与权限对应关系 -->
+
+        <beans:property name="securityMetadataSource" ref="MyInvocationSecurityMetadataSourceService" />
+        <!-- 用户拥有的权限 -->
+        <!--<beans:property name="authenticationManager" ref="authenticationManager" />-->
+    </beans:bean>
+    <beans:bean id="MyInvocationSecurityMetadataSourceService" class="com.yanghua.gongxiang.services.MyInvocationSecurityMetadataSourceService">
+
+    </beans:bean>
+    <beans:bean id="MyAccessDecisionManager" class="com.yanghua.gongxiang.services.MyAccessDecisionManager"></beans:bean>
+
+</beans:beans>
